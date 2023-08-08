@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import axios from 'axios';
 
-const EmpEdit = () => {
-    const { empid } = useParams();
-
-    //const [empdata, empdatachange] = useState({});
+const WalletUserEdit = () => {
+    const { walletUserId } = useParams();
 
     useEffect(() => {
-        fetch("http://localhost:8000/employee/" + empid).then((res) => {
-            return res.json();
+        axios
+		.get("http://localhost:8010/wallet/get-wallet-user?id=" + walletUserId)
+        .then((res) => {
+            return res.data[0];
         }).then((resp) => {
             idchange(resp.id);
-            namechange(resp.name);
-            emailchange(resp.email);
-            phonechange(resp.phone);
-            activechange(resp.isactive);
+            namechange(resp.name?  resp.name:'');
+            emailchange(resp.email? resp.email: '');
+            phonechange(resp.phone? resp.phone : '');
         }).catch((err) => {
             console.log(err.message);
         })
@@ -24,7 +24,6 @@ const EmpEdit = () => {
     const[name,namechange]=useState("");
     const[email,emailchange]=useState("");
     const[phone,phonechange]=useState("");
-    const[active,activechange]=useState(true);
     const[validation,valchange]=useState(false);
 
 
@@ -32,13 +31,13 @@ const EmpEdit = () => {
 
     const handlesubmit=(e)=>{
       e.preventDefault();
-      const empdata={id,name,email,phone,active};
+      const walletUserData={id,name,email,phone};
       
 
-      fetch("http://localhost:8000/employee/"+empid,{
+      fetch("http://localhost:8010/wallet/edit-wallet-user?id="+walletUserId,{
         method:"PUT",
         headers:{"content-type":"application/json"},
-        body:JSON.stringify(empdata)
+        body:JSON.stringify(walletUserData)
       }).then((res)=>{
         alert('Saved successfully.')
         navigate('/');
@@ -56,7 +55,7 @@ const EmpEdit = () => {
 
                     <div className="card" style={{"textAlign":"left"}}>
                         <div className="card-title">
-                            <h2>Employee Edit</h2>
+                            <h2>Wallet User Edit</h2>
                         </div>
                         <div className="card-body">
 
@@ -91,13 +90,13 @@ const EmpEdit = () => {
                                     </div>
                                 </div>
 
-                                <div className="col-lg-12">
+                                {/* <div className="col-lg-12">
                                     <div className="form-check">
                                     <input checked={active} onChange={e=>activechange(e.target.checked)} type="checkbox" className="form-check-input"></input>
                                         <label  className="form-check-label">Is Active</label>
                                         
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                        <button className="btn btn-success" type="submit">Save</button>
@@ -119,4 +118,4 @@ const EmpEdit = () => {
      );
 }
  
-export default EmpEdit;
+export default WalletUserEdit;

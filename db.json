@@ -1,11 +1,10 @@
 {
-  "employee": [
+  "wallet_user": [
     {
+      "id": 1,
       "name": "Nihira techiees",
       "email": "nihiratechiees@gmail.com",
-      "phone": "98899090",
-      "active": true,
-      "id": 1
+      "phone": "98899"
     },
     {
       "name": "Ricky Ponting",
@@ -21,16 +20,17 @@
       "phone": "908908767"
     },
     {
-      "id": 4,
-      "name": "Kane Williamson",
-      "email": "kw@in.com",
-      "phone": "908908767"
-    },
-    {
       "id": 5,
       "name": "vikram",
       "email": "vikram@in.com",
       "phone": "908908767"
+    },
+    {
+      "name": "anjali",
+      "email": "anjalikapoor7120@gmail.com",
+      "phone": "08851471064",
+      "active": true,
+      "id": 6
     }
   ]
 }

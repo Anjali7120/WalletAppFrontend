@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const EmpListing = () => {
-    const [empdata, empdatachange] = useState(null);
+const WalletUserListing = () => {
+    const [walletUserData, walletUserDataChange] = useState(null);
     const navigate = useNavigate();
 
     const LoadDetail = (id) => {
-        navigate("/employee/detail/" + id);
+        navigate("/wallet_user/detail/" + id);
     }
     const LoadEdit = (id) => {
-        navigate("/employee/edit/" + id);
+        navigate("/wallet_user/edit/" + id);
+    }
+    const LoadWallet = (id) => {
+        navigate("/wallet_user/wallet/" + id);
     }
     const Removefunction = (id) => {
         if (window.confirm('Do you want to remove?')) {
-            fetch("http://localhost:8000/employee/" + id, {
+            fetch("http://localhost:8000/wallet_user/" + id, {
                 method: "DELETE"
             }).then((res) => {
                 alert('Removed successfully.')
@@ -28,10 +31,10 @@ const EmpListing = () => {
 
 
     useEffect(() => {
-        fetch("http://localhost:8000/employee").then((res) => {
+        fetch("http://localhost:8010/wallet/get-wallet-user").then((res) => {
             return res.json();
         }).then((resp) => {
-            empdatachange(resp);
+            walletUserDataChange(resp);
         }).catch((err) => {
             console.log(err.message);
         })
@@ -40,11 +43,11 @@ const EmpListing = () => {
         <div className="container">
             <div className="card">
                 <div className="card-title">
-                    <h2>Employee Listing</h2>
+                    <h2>Wallet User Listing</h2>
                 </div>
                 <div className="card-body">
                     <div className="divbtn">
-                        <Link to="employee/create" className="btn btn-success">Add New (+)</Link>
+                        <Link to="wallet_user/create" className="btn btn-success">Add New (+)</Link>
                     </div>
                     <table className="table table-bordered">
                         <thead className="bg-dark text-white">
@@ -58,8 +61,8 @@ const EmpListing = () => {
                         </thead>
                         <tbody>
 
-                            {empdata &&
-                                empdata.map(item => (
+                            {walletUserData &&
+                                walletUserData.map(item => (
                                     <tr key={item.id}>
                                         <td>{item.id}</td>
                                         <td>{item.name}</td>
@@ -68,6 +71,7 @@ const EmpListing = () => {
                                         <td><a onClick={() => { LoadEdit(item.id) }} className="btn btn-success">Edit</a>
                                             <a onClick={() => { Removefunction(item.id) }} className="btn btn-danger">Remove</a>
                                             <a onClick={() => { LoadDetail(item.id) }} className="btn btn-primary">Details</a>
+                                            <a onClick={() => { LoadWallet(item.id) }} className="btn btn-primary">Go to Wallet</a>
                                         </td>
                                     </tr>
                                 ))
@@ -82,4 +86,4 @@ const EmpListing = () => {
     );
 }
 
-export default EmpListing;
+export default WalletUserListing;

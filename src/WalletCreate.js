@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate ,useParams} from "react-router-dom";
 
-const EmpCreate = () => {
+const WalletCreate = () => {
+    const { walletUserId } = useParams();
 
     const[id,idchange]=useState("");
-    const[name,namechange]=useState("");
-    const[email,emailchange]=useState("");
-    const[phone,phonechange]=useState("");
-    const[active,activechange]=useState(true);
+    const[balance,balancechange]=useState(0);
     const[validation,valchange]=useState(false);
 
 
@@ -15,13 +13,12 @@ const EmpCreate = () => {
 
     const handlesubmit=(e)=>{
       e.preventDefault();
-      const empdata={name,email,phone,active};
+      const walletData={wallet_user_id : Number(walletUserId),balance: Number(balance)};
       
-
-      fetch("http://localhost:8000/employee",{
+      fetch("http://localhost:8010/wallet/add-wallet",{
         method:"POST",
         headers:{"content-type":"application/json"},
-        body:JSON.stringify(empdata)
+        body:JSON.stringify(walletData)
       }).then((res)=>{
         alert('Saved successfully.')
         navigate('/');
@@ -40,7 +37,7 @@ const EmpCreate = () => {
 
                         <div className="card" style={{"textAlign":"left"}}>
                             <div className="card-title">
-                                <h2>Employee Create</h2>
+                                <h2>Wallet Create</h2>
                             </div>
                             <div className="card-body">
 
@@ -52,36 +49,22 @@ const EmpCreate = () => {
                                             <input value={id} disabled="disabled" className="form-control"></input>
                                         </div>
                                     </div>
+                                    <div className="col-lg-12">
+                                        <div className="form-group">
+                                            <label>Wallet User ID</label>
+                                            <input value={walletUserId} disabled="disabled" className="form-control"></input>
+                                        </div>
+                                    </div>
+
 
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <label>Name</label>
-                                            <input required value={name} onMouseDown={e=>valchange(true)} onChange={e=>namechange(e.target.value)} className="form-control"></input>
-                                        {name.length==0 && validation && <span className="text-danger">Enter the name</span>}
+                                            <label>Balance</label>
+                                            <input required value={balance} onMouseDown={e=>valchange(true)} onChange={e=>balancechange(e.target.value)} className="form-control"></input>
+                                        {balance.length==0 && validation && <span className="text-danger">Enter the amount</span>}
                                         </div>
                                     </div>
 
-                                    <div className="col-lg-12">
-                                        <div className="form-group">
-                                            <label>Email</label>
-                                            <input value={email} onChange={e=>emailchange(e.target.value)} className="form-control"></input>
-                                        </div>
-                                    </div>
-
-                                    <div className="col-lg-12">
-                                        <div className="form-group">
-                                            <label>Phone</label>
-                                            <input value={phone} onChange={e=>phonechange(e.target.value)} className="form-control"></input>
-                                        </div>
-                                    </div>
-
-                                    <div className="col-lg-12">
-                                        <div className="form-check">
-                                        <input checked={active} onChange={e=>activechange(e.target.checked)} type="checkbox" className="form-check-input"></input>
-                                            <label  className="form-check-label">Is Active</label>
-                                            
-                                        </div>
-                                    </div>
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                            <button className="btn btn-success" type="submit">Save</button>
@@ -103,4 +86,4 @@ const EmpCreate = () => {
     );
 }
 
-export default EmpCreate;
+export default WalletCreate;

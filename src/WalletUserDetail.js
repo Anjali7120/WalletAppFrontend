@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
+const WalletUserDetail = () => {
+    const { walletUserId } = useParams();
 
-const EmpDetail = () => {
-    const { empid } = useParams();
-
-    const [empdata, empdatachange] = useState({});
+    const [walletUserData, walletUserDataChange] = useState({});
 
     useEffect(() => {
-        fetch("http://localhost:8000/employee/" + empid).then((res) => {
-            return res.json();
+        axios
+		.get("http://localhost:8010/wallet/get-wallet-user?id=" + walletUserId)
+        .then((res) => {
+            return res.data[0];
         }).then((resp) => {
-            empdatachange(resp);
+            walletUserDataChange(resp);
         }).catch((err) => {
             console.log(err.message);
         })
@@ -25,16 +27,16 @@ const EmpDetail = () => {
                 
             <div className="card row" style={{ "textAlign": "left" }}>
                 <div className="card-title">
-                    <h2>Employee Create</h2>
+                    <h2>Wallet User Create</h2>
                 </div>
                 <div className="card-body"></div>
 
-                {empdata &&
+                {walletUserData &&
                     <div>
-                        <h2>The Employee name is : <b>{empdata.name}</b>  ({empdata.id})</h2>
+                        <h2>The Wallet User name is : <b>{walletUserData.name}</b>  ({walletUserData.id})</h2>
                         <h3>Contact Details</h3>
-                        <h5>Email is : {empdata.email}</h5>
-                        <h5>Phone is : {empdata.phone}</h5>
+                        <h5>Email is : {walletUserData.email}</h5>
+                        <h5>Phone is : {walletUserData.phone}</h5>
                         <Link className="btn btn-danger" to="/">Back to Listing</Link>
                     </div>
                 }
@@ -46,4 +48,4 @@ const EmpDetail = () => {
     );
 }
 
-export default EmpDetail;
+export default WalletUserDetail;
