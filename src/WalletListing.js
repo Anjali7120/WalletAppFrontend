@@ -5,31 +5,7 @@ const WalletListing = () => {
     const [walletData, walletDataChange] = useState(null);
     const { walletUserId } = useParams();
     const navigate = useNavigate();
-    // const LoadDetail = (id) => {
-    //     navigate("/wallet_user/detail/" + id);
-    // }
-    // const LoadEdit = (id) => {
-    //     navigate("/wallet_user/edit/" + id);
-    // }
-    // const LoadWallet = (id) => {
-    //     navigate("/wallet_user/wallet/" + id);
-    // }
-    // const Removefunction = (id) => {
-    //     if (window.confirm('Do you want to remove?')) {
-    //         fetch("http://localhost:8000/wallet_user/" + id, {
-    //             method: "DELETE"
-    //         }).then((res) => {
-    //             alert('Removed successfully.')
-    //             window.location.reload();
-    //         }).catch((err) => {
-    //             console.log(err.message)
-    //         })
-    //     }
-    // }
-
-
-
-
+    
     useEffect(() => {
         axios
 		.get("http://localhost:8010/wallet/get-wallet?wallet_user_id=" +  walletUserId)
@@ -73,9 +49,7 @@ const WalletListing = () => {
                                         <td>{item.balance}</td>
                                         <td>
                                             <a onClick={() => { navigate("/wallet/transaction/" + item.id); }} className="btn btn-success">Show Transactions</a>
-                                            {/* <a onClick={() => { Removefunction(item.id) }} className="btn btn-danger">Remove</a>
-                                            <a onClick={() => { LoadDetail(item.id) }} className="btn btn-primary">Details</a>
-                                            <a onClick={() => { LoadWallet(item.id) }} className="btn btn-primary">Go to Wallet</a> */}
+                                           
                                         </td>
                                     </tr>
                                 ))

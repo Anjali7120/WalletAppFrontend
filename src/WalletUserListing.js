@@ -14,18 +14,18 @@ const WalletUserListing = () => {
     const LoadWallet = (id) => {
         navigate("/wallet_user/wallet/" + id);
     }
-    const Removefunction = (id) => {
-        if (window.confirm('Do you want to remove?')) {
-            fetch("http://localhost:8000/wallet_user/" + id, {
-                method: "DELETE"
-            }).then((res) => {
-                alert('Removed successfully.')
-                window.location.reload();
-            }).catch((err) => {
-                console.log(err.message)
-            })
-        }
-    }
+    // const Removefunction = (id) => {
+    //     if (window.confirm('Do you want to remove?')) {
+    //         fetch("http://localhost:8010/wallet_user/" + id, {
+    //             method: "DELETE"
+    //         }).then((res) => {
+    //             alert('Removed successfully.')
+    //             window.location.reload();
+    //         }).catch((err) => {
+    //             console.log(err.message)
+    //         })
+    //     }
+    // }
 
 
 
@@ -69,8 +69,7 @@ const WalletUserListing = () => {
                                         <td>{item.email}</td>
                                         <td>{item.phone}</td>
                                         <td><a onClick={() => { LoadEdit(item.id) }} className="btn btn-success">Edit</a>
-                                            <a onClick={() => { Removefunction(item.id) }} className="btn btn-danger">Remove</a>
-                                            <a onClick={() => { LoadDetail(item.id) }} className="btn btn-primary">Details</a>
+                                             <a onClick={() => { LoadDetail(item.id) }} className="btn btn-primary">Details</a>
                                             <a onClick={() => { LoadWallet(item.id) }} className="btn btn-primary">Go to Wallet</a>
                                         </td>
                                     </tr>

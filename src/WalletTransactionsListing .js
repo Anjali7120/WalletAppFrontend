@@ -121,12 +121,7 @@ const WalletTransactionsListing = () => {
                                         <td>{item.remarks}</td>
                                         <td>{item.transaction_id}</td>
                                         <td>{item.createdAt}</td>
-                                        {/* <td>
-                                            <a onClick={() => { navigate("/wallet/transactions/" + item.id); }} className="btn btn-success">Show Transactions</a>
-                                            <a onClick={() => { Removefunction(item.id) }} className="btn btn-danger">Remove</a>
-                                            <a onClick={() => { LoadDetail(item.id) }} className="btn btn-primary">Details</a>
-                                            <a onClick={() => { LoadWallet(item.id) }} className="btn btn-primary">Go to Wallet</a>
-                                        </td> */}
+                                        
                                     </tr>
                                 ))
                             }
