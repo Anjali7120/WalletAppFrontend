@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate ,useParams} from "react-router-dom";
-
+import axios from "axios";
 const WalletCreate = () => {
     const { walletUserId } = useParams();
 
@@ -13,17 +13,14 @@ const WalletCreate = () => {
 
     const handlesubmit=(e)=>{
       e.preventDefault();
+      
       const walletData={wallet_user_id : Number(walletUserId),balance: Number(balance)};
       
-      fetch("http://localhost:8010/wallet/add-wallet",{
-        method:"POST",
-        headers:{"content-type":"application/json"},
-        body:JSON.stringify(walletData)
-      }).then((res)=>{
+      axios.post("http://localhost:8010/wallet/add-wallet", walletData ).then((res)=>{
         alert('Saved successfully.')
-        navigate('/');
+        navigate("/wallet/create/" + walletUserId);
       }).catch((err)=>{
-        console.log(err.message)
+        alert(err.response.data.message? err.response.data.message : err.message)
       })
 
     }
