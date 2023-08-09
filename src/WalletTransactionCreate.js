@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate ,useParams} from "react-router-dom";
-
+import axios from "axios";
 const WalletTransactionCreate = () => {
     const { walletId } = useParams();
 
     const[id,idchange]=useState("");
     const[amount,amountchange]=useState(0);
-    const[type,typechange]=useState(0);
+    const[type,typechange]=useState(1);
     const[remarks,remarkschange]=useState('');
     const[validation,valchange]=useState(false);
 
@@ -22,15 +22,12 @@ const WalletTransactionCreate = () => {
         type: Number(type)
       };
       
-      fetch("http://localhost:8010/wallet/add-wallet-transaction",{
-        method:"POST",
-        headers:{"content-type":"application/json"},
-        body:JSON.stringify(walletData)
-      }).then((res)=>{
+      axios.post("http://localhost:8010/wallet/add-wallet-transaction",  walletData
+      ).then((res)=>{
         alert('Saved successfully.')
-        navigate('/');
+        navigate('/wallet/transaction/'+walletId);
       }).catch((err)=>{
-        console.log(err.message)
+        alert(err.response.data.message? err.response.data.message : err.message)
       })
 
     }
@@ -74,25 +71,17 @@ const WalletTransactionCreate = () => {
                                         <div className="form-group">
                                             <label>Remarks</label>
                                             <input required value={remarks} onMouseDown={e=>valchange(true)} onChange={e=>remarkschange(e.target.value)} className="form-control"></input>
-                                        {remarks.length==0 && validation && <span className="text-danger">Enter the Remarks</span>}
                                         </div>
                                     </div>
-                                    {/* <div className="col-lg-12">
-                                        <div className="form-check">
-                                        <input checked={type} onChange={e=>typechange(e.target.checked)} type="radiobutton" className="form-check-input"></input>
-                                        <label  className="form-check-label">Is Active</label>
-                                            
-                                        </div>
-                                    </div> */}
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                             <label class="container">Debit
-                                                <input type="radio" checked={type} value={1}
+                                                <input type="radio" checked={type==1} value={1}
                                                 onChange={e=>typechange(e.target.value)}
                                                 name="radio"></input>
                                             </label>
                                             <label class="container">Credit
-                                                <input type="radio"checked={type} value={2}
+                                                <input type="radio"checked={type==2 } value={2}
                                                 onChange={e=>typechange(e.target.value)}
                                                 name="radio"></input>
                                             </label>

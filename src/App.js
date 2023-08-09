@@ -14,7 +14,7 @@ import WalletTransactionCreate from './WalletTransactionCreate'
 function App() {
   return (
     <div className="App">
-      <h1>React JS CRUD Opertations</h1>
+      <h1>Wallet App</h1>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<WalletUserListing />}></Route>

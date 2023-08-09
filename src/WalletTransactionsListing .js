@@ -6,11 +6,12 @@ import { CSVLink } from "react-csv";
 import axios from "axios";
 const WalletTransactionsListing = () => {
     const [walletData, walletDataChange] = useState(null);
+    const [sort,sortChange]=useState("");
     const { walletId } = useParams();
     console.log(walletId);
     const navigate = useNavigate();
     const csvData =[
-        ["ID", "Type", "Amount", "Balance", "Remarks", "Transaction Id"],["","","","","","","",""],
+        ["ID", "Type", "Amount", "Balance", "Remarks", "Transaction Id", "Created At"],["","","","","","","","",""],
       ];
 
     useEffect(() => {
@@ -25,14 +26,15 @@ const WalletTransactionsListing = () => {
             walletDataChange(resp);
             if(walletData.length>0)
             csvData =[
-                ["ID", "Type", "Amount", "Balance", "Remarks", "Transaction Id"],
-                ...walletData.map(({ id, type, amount, balance, remarks, transaction_id }) => [
+                ["ID", "Type", "Amount", "Balance", "Remarks", "Transaction Id", "Created At"],
+                ...walletData.map(({ id, type, amount, balance, remarks, transaction_id ,createdAt}) => [
                   id,
                   type,
                   amount,
                   balance,
                   remarks,
                   transaction_id,
+                  createdAt
                 ]),
               ];
         
@@ -40,6 +42,35 @@ const WalletTransactionsListing = () => {
             console.log(err.message);
         })
     }, [])
+
+    useEffect(() => {
+        axios
+		.get("http://localhost:8010/wallet/get-wallet-transaction?wallet_id=" +  walletId+ "&sort="+sort)
+        .then((res) => {
+            console.log(res.data)
+            return res.data;
+
+        })
+        .then((resp) => {
+            walletDataChange(resp);
+            if(walletData.length>0)
+            csvData =[
+                ["ID", "Type", "Amount", "Balance", "Remarks", "Transaction Id", "Created At"],
+                ...walletData.map(({ id, type, amount, balance, remarks, transaction_id ,createdAt}) => [
+                  id,
+                  type,
+                  amount,
+                  balance,
+                  remarks,
+                  transaction_id,
+                  createdAt
+                ]),
+              ];
+        
+        }).catch((err) => {
+            console.log(err.message);
+        })
+    }, [sort])
     return (
         <div className="container">
             <div className="card">
@@ -55,6 +86,15 @@ const WalletTransactionsListing = () => {
                     Export to CSV
                     </CSVLink>
                     </div>
+
+                    <div className="divbtn">
+                    <a onClick={() => { sortChange('createdAt') }} className="btn btn-success">sortBy Created At</a>
+                    </div>
+
+                    <div className="divbtn">
+                    <a onClick={() => { sortChange('amount') }} className="btn btn-success">sortBy Amount</a>
+                    </div>
+
                     <table className="table table-bordered">
                         <thead className="bg-dark text-white">
                             <tr>
@@ -64,7 +104,8 @@ const WalletTransactionsListing = () => {
                                 <td>balance</td>
                                 <td>remarks</td>
                                 <td>transaction_id</td>
-
+                                <td>Created At</td>
+                                    
                                 {/* <td>Action</td> */}
                             </tr>
                         </thead>
@@ -79,6 +120,7 @@ const WalletTransactionsListing = () => {
                                         <td>{item.balance}</td>
                                         <td>{item.remarks}</td>
                                         <td>{item.transaction_id}</td>
+                                        <td>{item.createdAt}</td>
                                         {/* <td>
                                             <a onClick={() => { navigate("/wallet/transactions/" + item.id); }} className="btn btn-success">Show Transactions</a>
                                             <a onClick={() => { Removefunction(item.id) }} className="btn btn-danger">Remove</a>
