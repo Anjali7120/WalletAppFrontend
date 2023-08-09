@@ -8,26 +8,24 @@ const WalletTransactionsListing = () => {
     const [walletData, walletDataChange] = useState(null);
     const [sort,sortChange]=useState("");
     const { walletId } = useParams();
-    console.log(walletId);
+    const [csv,csvChange]= useState([["ID", "Type", "Amount", "Balance", "Remarks", "Transaction Id", "Created At"]]);
+    
     const navigate = useNavigate();
-    const csvData =[
-        ["ID", "Type", "Amount", "Balance", "Remarks", "Transaction Id", "Created At"],["","","","","","","","",""],
-      ];
 
     useEffect(() => {
         axios
 		.get("http://localhost:8010/wallet/get-wallet-transaction?wallet_id=" +  walletId)
         .then((res) => {
-            console.log(res.data)
             return res.data;
 
         })
         .then((resp) => {
             walletDataChange(resp);
-            if(walletData.length>0)
-            csvData =[
+            if(resp.length>0)
+              { 
+                let csvData =[
                 ["ID", "Type", "Amount", "Balance", "Remarks", "Transaction Id", "Created At"],
-                ...walletData.map(({ id, type, amount, balance, remarks, transaction_id ,createdAt}) => [
+                ...resp.map(({ id, type, amount, balance, remarks, transaction_id ,createdAt}) => [
                   id,
                   type,
                   amount,
@@ -37,6 +35,8 @@ const WalletTransactionsListing = () => {
                   createdAt
                 ]),
               ];
+              csvChange(csvData);
+            }
         
         }).catch((err) => {
             console.log(err.message);
@@ -47,16 +47,16 @@ const WalletTransactionsListing = () => {
         axios
 		.get("http://localhost:8010/wallet/get-wallet-transaction?wallet_id=" +  walletId+ "&sort="+sort)
         .then((res) => {
-            console.log(res.data)
             return res.data;
 
         })
         .then((resp) => {
             walletDataChange(resp);
-            if(walletData.length>0)
-            csvData =[
+            if(resp.length>0)
+            {
+                let csvData =[
                 ["ID", "Type", "Amount", "Balance", "Remarks", "Transaction Id", "Created At"],
-                ...walletData.map(({ id, type, amount, balance, remarks, transaction_id ,createdAt}) => [
+                ...resp.map(({ id, type, amount, balance, remarks, transaction_id ,createdAt}) => [
                   id,
                   type,
                   amount,
@@ -66,6 +66,8 @@ const WalletTransactionsListing = () => {
                   createdAt
                 ]),
               ];
+              csvChange(csvData)
+            }
         
         }).catch((err) => {
             console.log(err.message);
@@ -82,7 +84,8 @@ const WalletTransactionsListing = () => {
                     <a onClick={() => { navigate("/wallet/transaction/create/" + walletId); }} className="btn btn-success">Add New Wallet Transaction (+)</a>
                     </div>
                     <div className="divbtn">
-                    <CSVLink className="btn btn-success" filename="my-file.csv" data={csvData}>
+
+                    <CSVLink className="btn btn-success" filename="my-file.csv" data={csv}>
                     Export to CSV
                     </CSVLink>
                     </div>
@@ -93,6 +96,10 @@ const WalletTransactionsListing = () => {
 
                     <div className="divbtn">
                     <a onClick={() => { sortChange('amount') }} className="btn btn-success">sortBy Amount</a>
+                    </div>
+
+                    <div className="divbtn">
+                    <a onClick={() => { navigate("/wallet") }} className="btn btn-primary">Go back to Wallet</a>
                     </div>
 
                     <table className="table table-bordered">

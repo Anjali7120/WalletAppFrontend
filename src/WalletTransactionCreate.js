@@ -41,7 +41,7 @@ const WalletTransactionCreate = () => {
 
                         <div className="card" style={{"textAlign":"left"}}>
                             <div className="card-title">
-                                <h2>Wallet Transaction Create</h2>
+                                <h2>Create Wallet Transaction</h2>
                             </div>
                             <div className="card-body">
 
@@ -67,10 +67,11 @@ const WalletTransactionCreate = () => {
                                         {amount.length==0 && validation && <span className="text-danger">Enter the amount</span>}
                                         </div>
                                     </div>
+
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                             <label>Remarks</label>
-                                            <input required value={remarks} onMouseDown={e=>valchange(true)} onChange={e=>remarkschange(e.target.value)} className="form-control"></input>
+                                            <input value={remarks} onChange={e=>remarkschange(e.target.value)} className="form-control"></input>
                                         </div>
                                     </div>
                                     <div className="col-lg-12">
@@ -91,7 +92,9 @@ const WalletTransactionCreate = () => {
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                            <button className="btn btn-success" type="submit">Save</button>
-                                           <Link to="/" className="btn btn-danger">Back</Link>
+                                           <a className="btn btn-danger"
+                                            href={"/wallet/transaction/"+walletId}>Back</a>
+                                          
                                         </div>
                                     </div>
 

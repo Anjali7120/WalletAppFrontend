@@ -16,7 +16,7 @@ const WalletUserEdit = () => {
             emailchange(resp.email? resp.email: '');
             phonechange(resp.phone? resp.phone : '');
         }).catch((err) => {
-            console.log(err.message);
+            alert(err.response.data.message? err.response.data.message : err.message)
         })
     }, []);
 
@@ -34,15 +34,11 @@ const WalletUserEdit = () => {
       const walletUserData={id,name,email,phone};
       
 
-      fetch("http://localhost:8010/wallet/edit-wallet-user?id="+walletUserId,{
-        method:"PUT",
-        headers:{"content-type":"application/json"},
-        body:JSON.stringify(walletUserData)
-      }).then((res)=>{
-        alert('Saved successfully.')
+      axios.put("http://localhost:8010/wallet/edit-wallet-user?id="+walletUserId,walletUserData).then((res)=>{
+        alert('updated successfully.')
         navigate('/');
       }).catch((err)=>{
-        console.log(err.message)
+        alert(err.response.data.message? err.response.data.message : err.message)
       })
 
     }
@@ -89,14 +85,6 @@ const WalletUserEdit = () => {
                                         <input value={phone} onChange={e=>phonechange(e.target.value)} className="form-control"></input>
                                     </div>
                                 </div>
-
-                                {/* <div className="col-lg-12">
-                                    <div className="form-check">
-                                    <input checked={active} onChange={e=>activechange(e.target.checked)} type="checkbox" className="form-check-input"></input>
-                                        <label  className="form-check-label">Is Active</label>
-                                        
-                                    </div>
-                                </div> */}
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                        <button className="btn btn-success" type="submit">Save</button>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate ,useParams} from "react-router-dom";
 import axios from "axios";
 const WalletCreate = () => {
-    const { walletUserId } = useParams();
+    const walletUserId = localStorage.getItem('walletUserId');
 
     const[id,idchange]=useState("");
     const[balance,balancechange]=useState(0);
@@ -18,7 +18,7 @@ const WalletCreate = () => {
       
       axios.post("http://localhost:8010/wallet/add-wallet", walletData ).then((res)=>{
         alert('Saved successfully.')
-        navigate("/wallet/create/" + walletUserId);
+        navigate("/wallet");
       }).catch((err)=>{
         alert(err.response.data.message? err.response.data.message : err.message)
       })
@@ -40,12 +40,6 @@ const WalletCreate = () => {
 
                                 <div className="row">
 
-                                    <div className="col-lg-12">
-                                        <div className="form-group">
-                                            <label>ID</label>
-                                            <input value={id} disabled="disabled" className="form-control"></input>
-                                        </div>
-                                    </div>
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                             <label>Wallet User ID</label>
