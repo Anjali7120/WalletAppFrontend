@@ -47,7 +47,9 @@ const WalletUserListing = () => {
                 </div>
                 <div className="card-body">
                     <div className="divbtn">
-                        <Link to="wallet_user/create" className="btn btn-success">Add New (+)</Link>
+                    {walletUserData && walletUserData.length==0 &&
+                        <Link to="wallet_user/create" className="btn btn-success">Add New User(+)</Link>
+                    }
                     </div>
                     <table className="table table-bordered">
                         <thead className="bg-dark text-white">

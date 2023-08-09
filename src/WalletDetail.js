@@ -2,18 +2,18 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
-const WalletUserDetail = () => {
-    const  walletUserId  = localStorage.getItem('walletUserId') || 0;
-
-    const [walletUserData, walletUserDataChange] = useState({});
+const WalletDetail = () => {
+    const  walletUserId  = localStorage.getItem('walletUserId');
+const walletId=0;
+    const [WalletData, WalletDataChange] = useState({});
 
     useEffect(() => {
         axios
-		.get("http://localhost:8010/wallet/get-wallet-user?id=" + walletUserId)
+		.get("http://localhost:8010/wallet/get-wallet?wallet_user_id=" + walletUserId)
         .then((res) => {
             return res.data[0];
         }).then((resp) => {
-            walletUserDataChange(resp);
+            WalletDataChange(resp);
         }).catch((err) => {
             console.log(err.message);
         })
@@ -27,26 +27,27 @@ const WalletUserDetail = () => {
                 
             <div className="card row" style={{ "textAlign": "left" }}>
                 <div className="card-title">
-                    <h2>Wallet User </h2>
+                    <h2>Wallet </h2>
                 </div>
                 <div className="card-body"></div>
-                {!walletUserData && 
+                {console.log( Object.keys(WalletData).length)}
+                {WalletData &&  Object.keys(WalletData).length==0&&
                 <div>
-                  <Link to="wallet_user/create" className="btn btn-success">Add New User(+)</Link>
+                  <Link to="/wallet/create" className="btn btn-success">Setup Wallet(+)</Link>
                 </div>    
                 }
-                {walletUserData &&
+                {WalletData &&Object.keys(WalletData).length>0 &&
                     <div>
                    
-                        <h2>The Wallet User name is : <b>{walletUserData.name}</b>  ({walletUserData.id})</h2>
-                        <h3>Contact Details</h3>
-                        <h5>Email is : {walletUserData.email}</h5>
-                        <h5>Phone is : {walletUserData.phone}</h5>
+                        <h2>The Wallet User name is : <b>{WalletData.wallet_user_name}</b></h2>
+                        <h5>Balance is : {WalletData.balance}</h5>
+                       
                         <a className="btn btn-success"
                         target='blank'
-                        href={"/wallet"}>Go To Wallet</a>
-                         <a className="btn btn-success"
-                        href={"/wallet_user/edit/"+walletUserId}>Edit User Details</a>
+                        href={"/wallet/transaction/" + WalletData.id}>Go To Transactions</a>
+
+                         <a className="btn btn-primary"
+                        href={"/"}>Go back to User</a>
                     </div>
                 }
             </div>
@@ -57,4 +58,4 @@ const WalletUserDetail = () => {
     );
 }
 
-export default WalletUserDetail;
+export default WalletDetail;

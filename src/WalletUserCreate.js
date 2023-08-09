@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import axios from "axios";
 const WalletUserCreate = () => {
 
     const[id,idchange]=useState("");
     const[name,namechange]=useState("");
     const[email,emailchange]=useState("");
     const[phone,phonechange]=useState("");
-    const[active,activechange]=useState(true);
     const[validation,valchange]=useState(false);
 
 
@@ -15,19 +14,17 @@ const WalletUserCreate = () => {
 
     const handlesubmit=(e)=>{
       e.preventDefault();
-      const walletUserData={name,email,phone,active};
+      const walletUserData={name,email,phone};
       
-
-      fetch("http://localhost:8010/wallet/add-wallet-user",{
-        method:"POST",
-        headers:{"content-type":"application/json"},
-        body:JSON.stringify(walletUserData)
-      }).then((res)=>{
+      axios.post("http://localhost:8010/wallet/add-wallet-user",  walletUserData
+      ).then((res)=>{
+        localStorage.setItem('walletUserId',  res.data.id);
         alert('Saved successfully.')
         navigate('/');
       }).catch((err)=>{
-        console.log(err.message)
+        alert(err.response.data.message? err.response.data.message : err.message)
       })
+
 
     }
 
@@ -40,18 +37,11 @@ const WalletUserCreate = () => {
 
                         <div className="card" style={{"textAlign":"left"}}>
                             <div className="card-title">
-                                <h2>Wallet User Create</h2>
+                                <h2>Create A Wallet User</h2>
                             </div>
                             <div className="card-body">
 
                                 <div className="row">
-
-                                    <div className="col-lg-12">
-                                        <div className="form-group">
-                                            <label>ID</label>
-                                            <input value={id} disabled="disabled" className="form-control"></input>
-                                        </div>
-                                    </div>
 
                                     <div className="col-lg-12">
                                         <div className="form-group">
@@ -75,13 +65,6 @@ const WalletUserCreate = () => {
                                         </div>
                                     </div>
 
-                                    <div className="col-lg-12">
-                                        <div className="form-check">
-                                        <input checked={active} onChange={e=>activechange(e.target.checked)} type="checkbox" className="form-check-input"></input>
-                                            <label  className="form-check-label">Is Active</label>
-                                            
-                                        </div>
-                                    </div>
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                            <button className="btn btn-success" type="submit">Save</button>
